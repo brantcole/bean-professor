@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "The Bean Professor",
+    "slug": "bean-professor",
+    "version": "0.1.0",
+    "scheme": "beanprofessor",
+    "orientation": "portrait",
+    "icon": "./assets/logo.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logo.png",
+        "backgroundColor": "#F7F1E7"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "./assets/logo.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/logo.png",
+          "imageWidth": 200,
+          "backgroundColor": "#F7F1E7"
+        }
+      ]
+    ]
+  }
+}

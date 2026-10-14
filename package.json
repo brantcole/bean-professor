@@ -1,0 +1,37 @@
+{
+  "name": "bean-professor",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/mobile",
+    "packages/domain",
+    "services/api"
+  ],
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "start": "npm run start --workspace @bean-professor/mobile",
+    "web": "npm run web --workspace @bean-professor/mobile",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint apps/mobile/app apps/mobile/src packages/domain/src services/api/src tests",
+    "format": "prettier --write apps/mobile/app apps/mobile/src packages/domain/src services/api/src tests README.md docs .github package.json tsconfig.json eslint.config.mjs vitest.config.ts playwright.config.ts",
+    "format:check": "prettier --check apps/mobile/app apps/mobile/src packages/domain/src services/api/src tests README.md docs .github package.json tsconfig.json eslint.config.mjs vitest.config.ts playwright.config.ts",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "check": "npm run typecheck && npm run lint && npm test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.39.1",
+    "typescript-eslint": "^8.56.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^16.5.0",
+    "prettier": "^3.7.3",
+    "vitest": "^4.0.18",
+    "@playwright/test": "^1.58.2",
+    "typescript": "~6.0.3",
+    "@types/node": "^24.0.0"
+  },
+  "type": "module"
+}

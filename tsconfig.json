@@ -1,0 +1,24 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noEmit": true,
+    "types": ["node"],
+    "paths": {
+      "@bean-professor/domain": ["./packages/domain/src/index.ts"]
+    }
+  },
+  "include": [
+    "apps/mobile/app/**/*.tsx",
+    "apps/mobile/src/**/*.ts",
+    "apps/mobile/src/**/*.tsx",
+    "packages/domain/src/**/*.ts",
+    "services/api/src/**/*.ts",
+    "tests/**/*.ts",
+    "vitest.config.ts",
+    "playwright.config.ts"
+  ],
+  "exclude": ["node_modules", "legacy", "apps/mobile/dist"]
+}

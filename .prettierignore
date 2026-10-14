@@ -1,0 +1,5 @@
+legacy/
+specs/
+node_modules/
+apps/mobile/dist/
+package-lock.json

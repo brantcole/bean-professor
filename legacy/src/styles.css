@@ -1,0 +1,173 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * The Bean Professor design system.
+ * Laboratory glassware + specialty coffee bar.
+ * All colors are oklch semantic tokens. Never hardcode colors in components.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-glass: var(--glass);
+  --color-copper: var(--copper);
+  --color-copper-foreground: var(--copper-foreground);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Karla", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+:root {
+  --radius: 0.35rem;
+  --background: oklch(0.18 0.021 55);
+  --foreground: oklch(0.94 0.014 80);
+  --card: oklch(0.225 0.024 55);
+  --card-foreground: oklch(0.94 0.014 80);
+  --popover: oklch(0.225 0.024 55);
+  --popover-foreground: oklch(0.94 0.014 80);
+  --primary: oklch(0.75 0.14 62);
+  --primary-foreground: oklch(0.19 0.03 55);
+  --secondary: oklch(0.29 0.026 60);
+  --secondary-foreground: oklch(0.93 0.014 80);
+  --muted: oklch(0.27 0.02 60);
+  --muted-foreground: oklch(0.72 0.023 75);
+  --accent: oklch(0.72 0.1 185);
+  --accent-foreground: oklch(0.18 0.03 190);
+  --destructive: oklch(0.6 0.19 27);
+  --destructive-foreground: oklch(0.97 0.01 80);
+  --border: oklch(0.33 0.024 60);
+  --input: oklch(0.33 0.024 60);
+  --ring: oklch(0.75 0.14 62);
+  --glass: oklch(0.82 0.08 190);
+  --copper: oklch(0.68 0.13 45);
+  --copper-foreground: oklch(0.97 0.01 80);
+  --chart-1: oklch(0.75 0.14 62);
+  --chart-2: oklch(0.72 0.1 185);
+  --chart-3: oklch(0.68 0.13 45);
+  --chart-4: oklch(0.8 0.09 95);
+  --chart-5: oklch(0.6 0.08 30);
+  --sidebar: oklch(0.21 0.022 55);
+  --sidebar-foreground: oklch(0.94 0.014 80);
+  --sidebar-primary: oklch(0.75 0.14 62);
+  --sidebar-primary-foreground: oklch(0.19 0.03 55);
+  --sidebar-accent: oklch(0.27 0.02 60);
+  --sidebar-accent-foreground: oklch(0.94 0.014 80);
+  --sidebar-border: oklch(0.33 0.024 60);
+  --sidebar-ring: oklch(0.75 0.14 62);
+
+  --gradient-lab: radial-gradient(
+      120% 90% at 15% 0%,
+      color-mix(in oklab, var(--accent) 16%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      120% 90% at 90% 10%,
+      color-mix(in oklab, var(--primary) 18%, transparent),
+      transparent 55%
+    );
+  --shadow-lab: 0 20px 50px -24px color-mix(in oklab, var(--primary) 45%, transparent);
+  --grid-line: color-mix(in oklab, var(--foreground) 6%, transparent);
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+}
+
+/* Graph-paper lab surface */
+@utility lab-surface {
+  background-image:
+    var(--gradient-lab),
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    28px 28px,
+    28px 28px;
+}
+
+@utility lab-card {
+  background-color: color-mix(in oklab, var(--card) 88%, transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lab);
+  backdrop-filter: blur(8px);
+}
+
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+@utility rule-ticks {
+  background-image: repeating-linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--foreground) 22%, transparent) 0 1px,
+    transparent 1px 10px
+  );
+  height: 6px;
+}

@@ -1,0 +1,3 @@
+# Phase 03 | Independent AI and evidence service
+
+Replace Lovable AI gateway and Firecrawl gateway coupling with server-side provider interfaces. Import legacy coffee corpus as UNVERIFIED candidates; implement metadata verification status, passage-level IDs, deterministic retrieval and claim-to-evidence validation. Provide typed REST or comparable API for chat/guide/vision, rate limiting, user auth, caching, latency metrics, error states. Tests must catch fabricated URLs, non-matching passages and official SCA endorsement claims without evidence. Use fake provider during test; real API credentials only in secret manager. Stop and report.

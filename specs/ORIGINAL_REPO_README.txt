@@ -1,0 +1,1 @@
+The original uploaded Lovable repository is intentionally NOT duplicated in this package, to avoid repackaging .env files or accidentally committed secrets. Provide your GitHub repository separately to Codex as read-only legacy reference.

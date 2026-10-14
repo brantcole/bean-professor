@@ -1,0 +1,3 @@
+# Phase 01 | Repo and native scaffold
+
+After approval of Phase 00: create `apps/mobile` using current stable Expo + Expo Router + TypeScript, and `services/api`, `packages/domain`, and `specs`. Keep legacy repo isolated. Add lint, strict TypeScript, formatting, unit-test harness, example env names without values, CI validation. Implement bottom tabs Coffee School, Brew Lab, Lab Journal, Roast Lab and settings entry, with native spacing/accessibility and the provided logo. Use mocked data at this phase. Include navigation and screenshot-based acceptance checks. Stop and report running checks before Phase 02.
