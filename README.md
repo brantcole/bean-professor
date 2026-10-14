@@ -20,6 +20,8 @@ The downloadable preview package contains the new workspace and migration docume
 
 If the QR code cannot connect, check the computer's firewall, disable an isolating guest Wi-Fi network, and confirm both devices are on the same network. If your Expo Go installation reports an SDK mismatch, use the matching Expo Go version where available. iOS App Store Expo Go may support only its current SDK; a development build is the later fallback, requiring the appropriate native tooling/signing. No development build or signing account was provisioned in Phase 1. Optional tunneling is not configured or tested here.
 
+For an explicit Expo Go/LAN launch from the root, use `npm run start:iphone -- --clear --port 8081`. If Expo Go cannot connect, follow [the iPhone diagnostics](docs/IPHONE_TROUBLESHOOTING.md), including the exact native bundle download check.
+
 For a browser preview, run `npm run web` from the root. Expo prints its local address. On macOS with Xcode installed, start Expo and press `i` for an iOS simulator; with Android Studio and an emulator available, press `a`. Physical-device and simulator validation remain to be performed.
 
 ## What you can do

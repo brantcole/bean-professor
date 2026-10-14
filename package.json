@@ -11,15 +11,17 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "start": "npm run start --workspace @bean-professor/mobile",
-    "web": "npm run web --workspace @bean-professor/mobile",
+    "start": "npm run start --workspace @bean-professor/mobile --",
+    "web": "npm run web --workspace @bean-professor/mobile --",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint apps/mobile/app apps/mobile/src packages/domain/src services/api/src tests",
-    "format": "prettier --write apps/mobile/app apps/mobile/src packages/domain/src services/api/src tests README.md docs .github package.json tsconfig.json eslint.config.mjs vitest.config.ts playwright.config.ts",
-    "format:check": "prettier --check apps/mobile/app apps/mobile/src packages/domain/src services/api/src tests README.md docs .github package.json tsconfig.json eslint.config.mjs vitest.config.ts playwright.config.ts",
+    "lint": "eslint apps/mobile/app apps/mobile/src packages/domain/src services/api/src tests scripts/check-expo-ios.mjs",
+    "format": "prettier --write apps/mobile/app apps/mobile/src packages/domain/src services/api/src tests README.md docs .github package.json tsconfig.json eslint.config.mjs vitest.config.ts playwright.config.ts scripts/check-expo-ios.mjs",
+    "format:check": "prettier --check apps/mobile/app apps/mobile/src packages/domain/src services/api/src tests README.md docs .github package.json tsconfig.json eslint.config.mjs vitest.config.ts playwright.config.ts scripts/check-expo-ios.mjs",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "check": "npm run typecheck && npm run lint && npm test"
+    "check": "npm run typecheck && npm run lint && npm test",
+    "start:iphone": "npm run start --workspace @bean-professor/mobile -- --go --lan",
+    "diagnose:ios": "node scripts/check-expo-ios.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
