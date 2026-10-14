@@ -10,6 +10,51 @@ Cloud checks confirmed SDK 57.0.0, Expo 57.0.28, React 19.2.3, and React Native 
 
 No Metro override is needed: Expo's default configuration includes the workspace package directories and both mobile/root node_modules locations. The shared TypeScript domain package resolves, and the actual development iOS launch bundle downloads successfully. JSON and multipart native manifest requests, including an Expo signature-request header, return HTTP 200. These checks validate the cloud development server, not an iPhone or Mac network.
 
+## Current next step: test the native bundle on the iPhone
+
+Your Mac has already passed the earlier download diagnostic, and Safari on your iPhone loads the **web** app. Those are different tests: the root web page uses a web bundle, while Expo Go downloads a native iOS bundle and runs it in a native runtime. Neither earlier result proves the iPhone downloaded the native bundle.
+
+1. Update this branch (`git pull --ff-only origin phase-1-prototype`) in your existing checkout. Keep Metro running normally. In a second Mac Terminal window, from the repository root, run:
+
+   ```sh
+   npm run diagnose:ios -- http://172.168.3.164:8081
+   ```
+
+   The expanded diagnostic checks both JSON and native multipart manifests, compares uncompressed/compressed iOS bundle bytes, and validates the native **multipart bundle progress stream**. It should print `same iOS bundle URL`, `Native bundle stream: HTTP 200`, and `matches plain bundle`. This is still a Mac-side test.
+
+2. Find the line starting **iOS bundle:**. Copy **only the complete URL**, starting with `http://` and ending after the last query parameter. Do not copy the label, insert spaces, or omit anything after `?`. Terminal may wrap a long URL onto several display lines; the URL itself is one continuous string.
+
+3. Send that URL to yourself using Messages, an iCloud-synced note, or AirDrop. On the iPhone, copy it, open Safari, tap the address bar, paste the entire URL, and tap **Go**. Use Safari's address bar, not a search engine. The earlier URL for this project is shown below; use the diagnostic's printed URL if it differs:
+
+   ```text
+   http://172.168.3.164:8081/node_modules/expo-router/entry.bundle?platform=ios&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.bytecode=1&transform.routerRoot=app&unstable_transformProfile=hermes-stable
+   ```
+
+4. **Expected result:** a large page of JavaScript text (often starting with `var __BUNDLE_START_TIME__`) or an offered/downloaded `.bundle` file, roughly 5.8 MB decoded for this version. It should **not** display the Coffee School web interface. Safari does not execute this React Native bundle as an application; seeing text or a downloaded file is expected. If a download is offered, finish it and note whether Safari reports it complete. Plain text appearing alone does not guarantee that every byte arrived.
+
+5. Record whether it completed, timed out, showed an error page, or displayed the web app. On the Mac, note any Metro error at the same time. If it fails, share Safari's exact message and the expanded diagnostic output. If it succeeds but Expo Go still fails, proceed to the native error-log step below; do not keep cycling the same cache/network resets.
+
+### If the native URL works in Safari but Expo Go still fails
+
+We need the underlying iOS error, not just the generic red screen:
+
+1. Connect the unlocked iPhone to the Mac using USB. Accept **Trust This Computer** if asked.
+2. On the Mac, open **Applications → Utilities → Console**. Select your iPhone under **Devices** in the sidebar, then click **Start** or **Start streaming**, if shown. If the phone is not listed, report that instead of installing additional tools immediately.
+3. Note the time, scan the Expo QR once, and wait for the failure. Search the captured messages for `RCTMultipartDataTask`, `172.168.3.164`, `NSURLErrorDomain`, `Expo`, or `Exponent`; use one search at a time. The process name can differ from the displayed app name.
+4. Share the matching connection-error lines and any `Code=...` value. Include `node -v`, the iOS version from **Settings → General → About**, and whether Metro displayed an iOS request/error during the attempt. Share only the relevant lines, not a full device log. If the red screen offers an expanded/copyable error, include that too.
+
+Examples: `-999` is a cancellation and can also be generated when React Native fails to finish reading a multipart stream; `-1015`/`-1016` concern response/content decoding; `-1001` is a timeout; `-1004` means the connection failed; `-1022` identifies an App Transport Security rejection; `-1009` indicates unavailable/disallowed connectivity and can require deeper local-network-policy diagnosis. A specific code determines the next investigation. A JavaScript exception with a stack trace would instead direct us to execution after download. None of these causes has been confirmed on this iPhone.
+
+## Additional verified investigation
+
+- Every installed SDK-pinned runtime dependency satisfies Expo 57's bundled-native-module versions. React, React Native and Expo resolve from the same workspace node_modules installation. The router entry is `expo-router/entry`, with valid app routes and no manual Metro override.
+- The native JSON and multipart/signature-request manifests advertise the same HTTP host, iOS launch URL and `exposdk:57.0.0` runtime. The Safari-style request to that **exact** URL returns JavaScript, not the web interface, on the cloud server.
+- Identity, gzip and Brotli bundle responses decode to identical bytes in cloud tests. The earlier Mac diagnostic requested no compressed response and only a JSON manifest; its PASS did not cover these native transport differences. The helper now covers both, rejects malformed/inconsistent responses, and normalizes default ports when comparing advertised origins (for example, HTTPS port 443).
+- [Expo's upstream SDK 57 Info.plist](https://github.com/expo/expo/blob/sdk-57/apps/expo-go/ios/Exponent/Supporting/Info.plist) sets `NSAllowsArbitraryLoads` to true. The fetched branch's app version was 57.0.6, so this is source evidence, not inspection of the installed 57.0.9 binary. Adding `ios.infoPlist` ATS exceptions here would affect a custom app build, **not** the installed Expo Go app. No such speculative change was made.
+- The shipped React Native source, `node_modules/react-native/React/Base/RCTJavaScriptLoader.mm`, constructs the exact “Could not connect to development server” message for `NSURLErrorDomain` failures before JavaScript execution. `RCTMultipartDataTask.m` sends `Accept: multipart/mixed` for the **bundle**; Safari normally does not. It uses an iOS stream reader for that response and generates a cancelled error if the multipart read does not finish. The older diagnostic requested ordinary JavaScript, so its PASS did not test that native-specific path. The expanded helper now validates complete boundaries, the final JavaScript part/status, and byte equality with the ordinary bundle. It cannot emulate iOS's stream implementation.
+- The real cloud server's multipart bundle response is uncompressed and complete; its final JavaScript part is byte-identical to the normal 5.77 MB response. Nine local transport-fixture tests cover valid compression/multipart responses and errors including a truncated native stream and an HTTP-200 envelope containing a failure status. Combined with the 16 domain tests, 25 unit tests pass, as do the 12 browser acceptance checks, TypeScript, lint, and formatting.
+- No physical iPhone, iOS simulator, or installed Expo Go binary can be exercised in this Linux environment. No new defect was reproduced in the application or its launch configuration. Changes in this investigation improve diagnostics and instructions only; they do not claim to fix the iPhone failure.
+
 ## Test the updated branch on your Mac
 
 1. From the repository root, update your branch and install the locked dependencies:
